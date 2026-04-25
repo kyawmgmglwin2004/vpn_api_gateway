@@ -67,22 +67,10 @@ async function userRegister(user_name, phone, password) {
       return StatusCode.UNKNOWN("User registration failed");
     }
 
-    const walletSql = 'INSERT INTO wallets (user_id, balance) VALUES (?, 0)';
-
-    const [walletResult] = await connection.query(walletSql, [result.insertId]);
-
-    if (walletResult.affectedRows === 0) {
-      return StatusCode.UNKNOWN("Wallet creation failed");
-    }
-
-    await connection.commit();
-
-
     return StatusCode.OK("user registered successfully");
 
   } catch (error) {
     console.error("Error registering user:", error);
-    if (connection) await connection.rollback();
     return StatusCode.UNKNOWN("Database error");
   } finally {
     if (connection) connection.release();
