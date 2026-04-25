@@ -16,8 +16,8 @@ async function userLogin(req, res) {
 async function userRegister(req, res) {
         
     try {
-        const { name, phone, password } = req.body;
-        const result = await usersService.userRegister(name, phone, password);
+        const { user_name, phone, password } = req.body;
+        const result = await usersService.userRegister(user_name, phone, password);
         res.status(result.code).json(result);   
     } catch (error) {
         console.error("Error user register action:", error);

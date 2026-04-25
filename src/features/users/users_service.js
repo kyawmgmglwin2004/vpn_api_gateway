@@ -41,10 +41,10 @@ async function userLogin(phone, password) {
   }
 }
 
-async function userRegister(name, phone, password) {
+async function userRegister(user_name, phone, password) {
   let connection;
   try {
-    if (!name || !phone || !password) {
+    if (!user_name || !phone || !password) {
       return StatusCode.INVALID_ARGUMENT("Missing required fields");
     }
     const existingUserSql = `SELECT * FROM users WHERE phone = ?`;
@@ -59,9 +59,9 @@ async function userRegister(name, phone, password) {
     const hashedPassword = await bcrypt.hash(password, 10);
     const createdAt = new Date().toISOString().slice(0, 19).replace("T", " ");
 
-    let sql = `INSERT INTO users (name, phone, password, created_at) VALUES (?, ?, ?, ?)`;
+    let sql = `INSERT INTO users (user_name, phone, password, created_at) VALUES (?, ?, ?, ?)`;
 
-    const [result] = await connection.query(sql, [name, phone, hashedPassword, createdAt]);
+    const [result] = await connection.query(sql, [user_name, phone, hashedPassword, createdAt]);
 
     if (result.affectedRows === 0) {
       return StatusCode.UNKNOWN("User registration failed");
